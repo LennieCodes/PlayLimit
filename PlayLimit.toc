@@ -1,0 +1,6 @@
+## Interface: 20400
+## Title: PlayLimit
+## Notes: Simple addon that sets a play limit so you can enjoy WoW and other things in life. 
+## Author: Lethra
+## SavedVariables: PlayLimitDB
+PlayLimit.lua
