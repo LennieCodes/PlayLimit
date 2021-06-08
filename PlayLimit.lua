@@ -13,27 +13,30 @@ local function onEvent(self, event, ...)
 		PlayLimitDB = {};
 		PlayLimitDB.endDate = getNewEndDate();
     PlayLimitDB.gameTimer = 0;
-    PlayLimitDB.timeLimit = 21600	
+    PlayLimitDB.timeLimit = 21600;	
   end
-  if event == "PLAYER_LOGIN" then
-    if (time() > PlayLimitDB.endDate) then
-      PlayLimitDB.endDate = getNewEndDate();
-      PlayLimitDB.gameTimer = 0;
-    end
 
-    local timeLeft = PlayLimitDB.timeLimit - PlayLimitDB.gameTimer;
+  if time() > PlayLimitDB.endDate then 
+    PlayLimitDB.endDate = getNewEndDate();
+    PlayLimitDB.gameTimer = 0;
+    PlayLimitDB.timeLimit = 21600;
+  end
+
+  local timeLeft = PlayLimitDB.timeLimit - PlayLimitDB.gameTimer;
+
+  if timeLeft > 0 then
     Stopwatch_StartCountdown(0,0,timeLeft); 
     Stopwatch_Play();
   end
+
 end
 
 local function onUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed;
 	if self.elapsed >= 60 then
 		PlayLimitDB.gameTimer = PlayLimitDB.gameTimer + 60;
-		if (time() < PlayLimitDB.endDate and PlayLimitDB.gameTimer >= 21600) then
+		if time() < PlayLimitDB.endDate and PlayLimitDB.gameTimer >= PlayLimitDB.timeLimit then
   			message('playtime has expired, time to log off');
-  			Logout();
 		end
 		self.elapsed = 0;
 	end
